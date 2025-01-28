@@ -211,8 +211,9 @@ func (c *Client) CreateIncidentWithContext(ctx context.Context, from string, o *
 
 	var ii createIncidentResponse
 	if err = c.decodeJSON(resp, &ii); err != nil {
-		bodyBytes, err := io.ReadAll(resp.Body)
-		if err != nil {
+		bodyBytes, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			log.Printf("error reading response body: %v", readErr)
 			bodyBytes = []byte("error reading response body")
 		}
 		bodyString := string(bodyBytes)
