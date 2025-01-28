@@ -3,6 +3,8 @@ package pagerduty
 import (
 	"context"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 
 	"github.com/google/go-querystring/query"
@@ -209,6 +211,12 @@ func (c *Client) CreateIncidentWithContext(ctx context.Context, from string, o *
 
 	var ii createIncidentResponse
 	if err = c.decodeJSON(resp, &ii); err != nil {
+		bodyBytes, err := io.ReadAll(resp.Body)
+		if err != nil {
+			bodyBytes = []byte("error reading response body")
+		}
+		bodyString := string(bodyBytes)
+		log.Printf("error decoding create incident response: %v\n body: %s", err, bodyString)
 		return nil, err
 	}
 

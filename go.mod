@@ -1,4 +1,4 @@
-module github.com/sim1s/go-pagerduty
+module github.com/blamelesshq/go-pagerduty
 
 go 1.14
 
